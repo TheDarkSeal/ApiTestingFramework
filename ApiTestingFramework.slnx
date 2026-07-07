@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="ApiTestingFramework/ApiTestingFramework.csproj" Id="053cc4be-b90b-4e15-aa64-c62b3a3850c9" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="ApiTestingFramework.Test/ApiTestingFramework.Test.csproj" Id="445eda39-7088-46dc-9e6c-1943c9de0938" />
+  </Folder>
+</Solution>
