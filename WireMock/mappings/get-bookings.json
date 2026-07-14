@@ -1,0 +1,23 @@
+﻿{
+  "request": {
+    "method": "GET",
+    "url": "/booking"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "bookingid": 1
+      },
+      {
+        "bookingid": 2
+      },
+      {
+        "bookingid": 3
+      }
+    ]
+  }
+}

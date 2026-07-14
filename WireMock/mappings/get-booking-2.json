@@ -1,0 +1,23 @@
+﻿{
+  "request": {
+    "method": "GET",
+    "url": "/booking/2"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "firstname": "Alice",
+      "lastname": "Johnson",
+      "totalprice": 275,
+      "depositpaid": false,
+      "bookingdates": {
+        "checkin": "2026-09-10",
+        "checkout": "2026-09-15"
+      },
+      "additionalneeds": "Late Checkout"
+    }
+  }
+}

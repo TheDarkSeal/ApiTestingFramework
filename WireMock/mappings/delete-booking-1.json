@@ -1,0 +1,14 @@
+﻿{
+	"request": {
+		"method": "DELETE",
+		"url": "/booking/1",
+		"headers": {
+			"Cookie": {
+				"contains": "token="
+			}
+		}
+	},
+	"response": {
+		"status": 201
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"scenarioName": "Booking Lifecycle",
+	"requiredScenarioState": "BookingCreated",
+
+	"request": {
+		"method": "GET",
+		"url": "/booking/101"
+	},
+
+	"response": {
+		"status": 200,
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"jsonBody": {
+			"firstname": "John",
+			"lastname": "Smith",
+			"totalprice": 150,
+			"depositpaid": true,
+			"bookingdates": {
+				"checkin": "2026-08-01",
+				"checkout": "2026-08-07"
+			},
+			"additionalneeds": "Breakfast"
+		}
+	}
+}

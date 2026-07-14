@@ -1,0 +1,50 @@
+﻿{
+	"scenarioName": "Booking Lifecycle",
+	"newScenarioState": "BookingCreated",
+
+	"request": {
+		"method": "POST",
+		"url": "/booking",
+		"bodyPatterns": [
+			{
+				"matchesJsonPath": "$.firstname"
+			},
+			{
+				"matchesJsonPath": "$.lastname"
+			},
+			{
+				"matchesJsonPath": "$.totalprice"
+			},
+			{
+				"matchesJsonPath": "$.depositpaid"
+			},
+			{
+				"matchesJsonPath": "$.bookingdates.checkin"
+			},
+			{
+				"matchesJsonPath": "$.bookingdates.checkout"
+			}
+		]
+	},
+
+	"response": {
+		"status": 201,
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"jsonBody": {
+			"bookingid": 101,
+			"booking": {
+				"firstname": "John",
+				"lastname": "Smith",
+				"totalprice": 150,
+				"depositpaid": true,
+				"bookingdates": {
+					"checkin": "2026-08-01",
+					"checkout": "2026-08-07"
+				},
+				"additionalneeds": "Breakfast"
+			}
+		}
+	}
+}

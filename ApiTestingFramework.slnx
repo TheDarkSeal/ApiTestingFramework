@@ -1,8 +1,27 @@
 <Solution>
+  <Folder Name="/docker/" />
+  <Folder Name="/docker/WireMock/">
+    <File Path="WireMock/docker-compose.yml" />
+  </Folder>
+  <Folder Name="/docker/WireMock/mappings/">
+    <File Path="delete-booking-101.json" />
+    <File Path="get-booking-101-updated.json" />
+    <File Path="get-booking-101.json" />
+    <File Path="put-booking-101.json" />
+    <File Path="WireMock/mappings/delete-booking-1.json" />
+    <File Path="WireMock/mappings/get-booking-1.json" />
+    <File Path="WireMock/mappings/get-booking-2.json" />
+    <File Path="WireMock/mappings/get-booking-999.json" />
+    <File Path="WireMock/mappings/get-bookings.json" />
+    <File Path="WireMock/mappings/post-auth.json" />
+    <File Path="WireMock/mappings/post-booking.json" />
+    <File Path="WireMock/mappings/put-booking-1.json" />
+  </Folder>
+  <Folder Name="/docker/WireMock/__files/" />
   <Folder Name="/src/">
-    <Project Path="ApiTestingFramework/ApiTestingFramework.csproj" Id="053cc4be-b90b-4e15-aa64-c62b3a3850c9" />
+    <Project Path="ApiTestingFramework/ApiTestingFramework.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="ApiTestingFramework.Test/ApiTestingFramework.Test.csproj" Id="445eda39-7088-46dc-9e6c-1943c9de0938" />
+    <Project Path="ApiTestingFramework.Test/ApiTestingFramework.Test.csproj" />
   </Folder>
 </Solution>

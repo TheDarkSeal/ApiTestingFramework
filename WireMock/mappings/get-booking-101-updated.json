@@ -1,0 +1,27 @@
+{
+	"scenarioName": "Booking Lifecycle",
+	"requiredScenarioState": "BookingUpdated",
+
+	"request": {
+		"method": "GET",
+		"url": "/booking/101"
+	},
+
+	"response": {
+		"status": 200,
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"jsonBody": {
+			"firstname": "Updated",
+			"lastname": "User",
+			"totalprice": 500,
+			"depositpaid": false,
+			"bookingdates": {
+				"checkin": "2026-09-01",
+				"checkout": "2026-09-10"
+			},
+			"additionalneeds": "Dinner"
+		}
+	}
+}

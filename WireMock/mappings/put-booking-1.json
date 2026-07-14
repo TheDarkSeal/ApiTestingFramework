@@ -1,0 +1,58 @@
+﻿{
+	"request": {
+		"method": "PUT",
+		"url": "/booking/1",
+		"bodyPatterns": [
+			{
+				"matchesJsonPath": {
+					"expression": "$.firstname",
+					"matches": "^[A-Za-z]+$"
+				}
+			},
+			{
+				"matchesJsonPath": {
+					"expression": "$.lastname",
+					"matches": "^[A-Za-z]+$"
+				}
+			},
+			{
+				"matchesJsonPath": {
+					"expression": "$.totalprice",
+					"matches": "^[0-9]+$"
+				}
+			},
+			{
+				"matchesJsonPath": "$.depositpaid"
+			},
+			{
+				"matchesJsonPath": {
+					"expression": "$.bookingdates.checkin",
+					"matches": "^\\d{4}-\\d{2}-\\d{2}$"
+				}
+			},
+			{
+				"matchesJsonPath": {
+					"expression": "$.bookingdates.checkout",
+					"matches": "^\\d{4}-\\d{2}-\\d{2}$"
+				}
+			}
+		]
+	},
+	"response": {
+		"status": 200,
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"jsonBody": {
+			"firstname": "{{jsonPath request.body '$.firstname'}}",
+			"lastname": "{{jsonPath request.body '$.lastname'}}",
+			"totalprice": "{{jsonPath request.body '$.totalprice'}}",
+			"depositpaid": "{{jsonPath request.body '$.depositpaid'}}",
+			"bookingdates": {
+				"checkin": "{{jsonPath request.body '$.bookingdates.checkin'}}",
+				"checkout": "{{jsonPath request.body '$.bookingdates.checkout'}}"
+			},
+			"additionalneeds": "{{jsonPath request.body '$.additionalneeds'}}"
+		}
+	}
+}
