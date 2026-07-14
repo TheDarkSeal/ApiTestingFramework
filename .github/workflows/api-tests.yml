@@ -3,7 +3,7 @@ name: API Test Framework
 on:
   push:
     branches:
-      - main
+      - master
       - develop
 
   pull_request:
