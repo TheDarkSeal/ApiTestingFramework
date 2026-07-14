@@ -16,7 +16,6 @@ public class BookingLifecycleTests : TestBase
         // Arrange
         var booking = BookingBuilder
             .Create()
-            .WithRandomData()
             .Build();
 
         var authRequest = AuthRequestBuilder
