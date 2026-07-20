@@ -10,37 +10,47 @@ namespace ApiTestingFramework.Tests.Bookings;
 
 public class BookingLifecycleTests : TestBase
 {
-    [Test]
-    public async Task BookingLifecycle_Should_Create_Update_And_Delete_Booking()
+    private async Task<string> AuthenticateAsync()
     {
-        // Arrange
-        var booking = BookingBuilder
-            .Create()
-            .Build();
-
-        var authRequest = AuthRequestBuilder
-            .Create()
-            .Build();
-
-        // Authenticate
+        var authRequest = AuthRequestBuilder.Create().Build();
         var authResponse = await AuthClient.AuthenticateAsync(authRequest);
 
         authResponse.ShouldContainToken();
+        return authResponse.Token;
+    }
 
-        // Create
+    [Test]
+    public async Task Should_Create_Booking()
+    {
+        var booking = BookingBuilder.Create().Build();
+
+        var response = await BookingClient.CreateBookingAsync(booking);
+
+        response.Bookingid.Should().BeGreaterThan(0);
+        response.Booking.Should().BeEquivalentTo(booking);
+    }
+
+    [Test]
+    public async Task Should_Read_Booking()
+    {
+        var booking = BookingBuilder.Create().Build();
         var createResponse = await BookingClient.CreateBookingAsync(booking);
 
-        createResponse.Bookingid.Should().Be(101);
-        createResponse.Booking.ShouldBeEquivalentTo(booking);
+        var created = await BookingClient.GetBookingAsync(createResponse.Bookingid);
 
-        // Read
-        var createdBooking = await BookingClient.GetBookingAsync(101);
+        created.Should().NotBeNull();
+        created.Should().BeEquivalentTo(booking);
+    }
 
-        createdBooking.Should().NotBeNull();
+    [Test]
+    public async Task Should_Update_Booking()
+    {
+        var token = await AuthenticateAsync();
 
-        // Update
-        var updatedBooking = BookingBuilder
-            .Create()
+        var original = BookingBuilder.Create().Build();
+        var createResponse = await BookingClient.CreateBookingAsync(original);
+
+        var updated = BookingBuilder.Create()
             .WithFirstname("Updated")
             .WithLastname("User")
             .WithTotalPrice(500)
@@ -52,26 +62,30 @@ public class BookingLifecycleTests : TestBase
             .Build();
 
         var updateResponse = await BookingClient.UpdateBookingAsync(
-            101,
-            updatedBooking,
-            authResponse.Token);
+            createResponse.Bookingid,
+            updated,
+            token);
 
-        updateResponse.ShouldBeEquivalentTo(updatedBooking);
+        updateResponse.Should().BeEquivalentTo(updated);
 
-        // Read again
-        var bookingAfterUpdate = await BookingClient.GetBookingAsync(101);
-
-        bookingAfterUpdate.ShouldBeEquivalentTo(updatedBooking);
-
-        // Delete
-        await BookingClient.DeleteBookingAsync(
-            101,
-            authResponse.Token);
-
-        // Verify deleted
-        var exception = await Assert.ThrowsAsync<ApiException>(() =>
-            BookingClient.GetBookingAsync(101));
-
-        exception.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        var readBack = await BookingClient.GetBookingAsync(createResponse.Bookingid);
+        readBack.Should().BeEquivalentTo(updated);
     }
+
+    [Test]
+    public async Task Should_Delete_Booking()
+    {
+        var token = await AuthenticateAsync();
+
+        var booking = BookingBuilder.Create().Build();
+        var createResponse = await BookingClient.CreateBookingAsync(booking);
+
+        await BookingClient.DeleteBookingAsync(createResponse.Bookingid, token);
+
+        var ex = await Assert.ThrowsAsync<ApiException>(() =>
+            BookingClient.GetBookingAsync(createResponse.Bookingid));
+
+        ex.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
 }

@@ -1,4 +1,6 @@
 ﻿
+using ApiTestingFramework.Models;
+
 namespace ApiTestingFramework.Builders;
 
 public class AuthRequestBuilder

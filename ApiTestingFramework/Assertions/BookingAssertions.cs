@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using ApiTestingFramework.Models;
+using FluentAssertions;
 
 namespace ApiTestingFramework.Tests.Assertions;
 

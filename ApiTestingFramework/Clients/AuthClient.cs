@@ -1,4 +1,5 @@
 ﻿using ApiTestingFramework.Clients;
+using ApiTestingFramework.Models;
 using Microsoft.Extensions.Logging;
 
 public class AuthClient : BaseApiClient
