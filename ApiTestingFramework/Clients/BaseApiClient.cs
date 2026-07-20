@@ -30,17 +30,13 @@ public abstract class BaseApiClient
                 r.StatusCode == HttpStatusCode.RequestTimeout ||
                 r.StatusCode == HttpStatusCode.TooManyRequests ||
                 (int)r.StatusCode >= 500)
-            .WaitAndRetryAsync(
-                3,
-                retry => TimeSpan.FromSeconds(retry));
+            .WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(retry));
     }
 
     protected Task<T> GetAsync<T>(string endpoint)
         => SendAsync<T>(HttpMethod.Get, endpoint);
 
-    protected Task<TResponse> PostAsync<TResponse>(
-        string endpoint,
-        object body)
+    protected Task<TResponse> PostAsync<TResponse>(string endpoint, object body)
         => SendAsync<TResponse>(HttpMethod.Post, endpoint, body);
 
     protected Task<TResponse> PutAsync<TResponse>(
@@ -49,73 +45,33 @@ public abstract class BaseApiClient
         Dictionary<string, string>? headers = null)
         => SendAsync<TResponse>(HttpMethod.Put, endpoint, body, headers);
 
-    protected Task DeleteAsync(
-        string endpoint,
-        Dictionary<string, string>? headers = null)
-        => SendWithoutResponseAsync(HttpMethod.Delete, endpoint, headers: headers);
+    protected Task DeleteAsync(string endpoint, Dictionary<string, string>? headers = null)
+        => SendAsync<object>(HttpMethod.Delete, endpoint, headers: headers, expectResponseBody: false);
 
     private async Task<T> SendAsync<T>(
         HttpMethod method,
         string endpoint,
         object? body = null,
-        Dictionary<string, string>? headers = null)
+        Dictionary<string, string>? headers = null,
+        bool expectResponseBody = true)
     {
         using var response = await SendRequestAsync(method, endpoint, body, headers);
 
         var content = await response.Content.ReadAsStringAsync();
 
-        _logger.LogInformation(
-    "Sending {Method} request to {Endpoint}",
-    method,
-    endpoint);
-
-        _logger.LogInformation(
-    "Response received. StatusCode: {StatusCode}",
-    response.StatusCode);
-
-        _logger.LogDebug(
-    "Response body: {ResponseBody}",
-    content);
+        LogResponse(method, endpoint, response, content);
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new ApiException(
-                response.StatusCode,
-                content);
+            throw new ApiException(response.StatusCode, content);
+        }
+
+        if (!expectResponseBody)
+        {
+            return default!;
         }
 
         return JsonSerializer.Deserialize<T>(content, JsonOptions)!;
-    }
-
-    private async Task SendWithoutResponseAsync(
-        HttpMethod method,
-        string endpoint,
-        object? body = null,
-        Dictionary<string, string>? headers = null)
-    {
-        using var response = await SendRequestAsync(method, endpoint, body, headers);
-
-        var content = await response.Content.ReadAsStringAsync();
-
-        _logger.LogInformation(
-    "Sending {Method} request to {Endpoint}",
-    method,
-    endpoint);
-
-        _logger.LogInformation(
-    "Response received. StatusCode: {StatusCode}",
-    response.StatusCode);
-
-        _logger.LogDebug(
-    "Response body: {ResponseBody}",
-    content);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new ApiException(
-                response.StatusCode,
-                content);
-        }
     }
 
     private Task<HttpResponseMessage> SendRequestAsync(
@@ -139,18 +95,25 @@ public abstract class BaseApiClient
             if (body != null)
             {
                 var json = JsonSerializer.Serialize(body, JsonOptions);
+                _logger.LogDebug("Request body: {RequestBody}", json);
 
-                _logger.LogDebug(
-    "Request body: {RequestBody}",
-    json);
-
-                request.Content = new StringContent(
-                    json,
-                    Encoding.UTF8,
-                    "application/json");
+                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }
+
+            // ⭐ LOG BEFORE sending the request
+            _logger.LogInformation("Sending {Method} request to {Endpoint}", method, endpoint);
 
             return await Client.SendAsync(request);
         });
+    }
+
+    private void LogResponse(
+        HttpMethod method,
+        string endpoint,
+        HttpResponseMessage response,
+        string content)
+    {
+        _logger.LogInformation("Response received. StatusCode: {StatusCode}", response.StatusCode);
+        _logger.LogDebug("Response body: {ResponseBody}", content);
     }
 }

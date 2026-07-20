@@ -1,0 +1,14 @@
+{
+  "scenarioName": "Booking Lifecycle",
+  "requiredScenarioState": "BookingCreated",
+  "newScenarioState": "BookingDeleted",
+
+  "request": {
+    "method": "DELETE",
+    "url": "/booking/101"
+  },
+
+  "response": {
+    "status": 200
+  }
+}

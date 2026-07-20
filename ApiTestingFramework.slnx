@@ -4,7 +4,6 @@
     <File Path="WireMock/docker-compose.yml" />
   </Folder>
   <Folder Name="/docker/WireMock/mappings/">
-    <File Path="delete-booking-101.json" />
     <File Path="get-booking-101-updated.json" />
     <File Path="get-booking-101.json" />
     <File Path="put-booking-101.json" />

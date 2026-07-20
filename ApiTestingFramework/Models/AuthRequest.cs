@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace ApiTestingFramework.Models;
+
+using System.Text.Json.Serialization;
 
 public class AuthRequest
 {

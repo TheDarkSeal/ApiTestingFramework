@@ -5,11 +5,12 @@ using NUnit.Framework;
 
 namespace ApiTestingFramework.Tests;
 
-public abstract class TestBase
+public abstract class TestBase : IDisposable
 {
+    private ServiceProvider _provider = null!;
+
     protected BookingClient BookingClient = null!;
     protected AuthClient AuthClient = null!;
-
 
     [SetUp]
     public void Setup()
@@ -18,9 +19,14 @@ public abstract class TestBase
 
         services.AddApiFramework();
 
-        var provider = services.BuildServiceProvider();
+        _provider = services.BuildServiceProvider();
 
-        BookingClient = provider.GetRequiredService<BookingClient>();
-        AuthClient = provider.GetRequiredService<AuthClient>();
+        BookingClient = _provider.GetRequiredService<BookingClient>();
+        AuthClient = _provider.GetRequiredService<AuthClient>();
+    }
+
+    public void Dispose()
+    {
+        _provider?.Dispose();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Bogus;
+﻿using ApiTestingFramework.Models;
+using Bogus;
 
 namespace ApiTestingFramework.Builders;
 
