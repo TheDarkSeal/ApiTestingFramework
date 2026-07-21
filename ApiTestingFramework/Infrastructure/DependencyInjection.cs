@@ -18,10 +18,10 @@ public static class DependencyInjection
         ValidateBaseUrl(baseUrl);
 
         services.AddHttpClient<AuthClient>(client =>
-            ConfigureClient(client, baseUrl));
+            ConfigureClient(client, baseUrl!));
 
         services.AddHttpClient<BookingClient>(client =>
-            ConfigureClient(client, baseUrl));
+            ConfigureClient(client, baseUrl!));
 
         services.AddSingleton(LoggerSetup.CreateLoggerFactory());
         services.AddLogging();
